@@ -1,14 +1,63 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import { transitions, positions, Provider as AlertProvider } from "react-alert";
+// import AlertTemplate from "react-alert-template-basic";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+
+const options = {
+  // you can also just use 'bottom center'
+  position: positions.TOP_CENTER,
+  timeout: 5000,
+  offset: "30px",
+  // containerStyle: {
+  //   backgroundColor: "pink",
+  // },
+  // you can also just use 'scale'
+  transition: transitions.SCALE,
+};
+
+const AlertTemplate = ({ style, options, message, close }) => (
+  <div
+    style={{
+      // width: "30%",
+      // height: "50px",
+      marginTop: "50px",
+      // backgroundColor: "pink"
+    }}
+  >
+    {/* {options.type === "info" && "!"}
+    {options.type === "success" && ":)"}
+    {options.type === "error" && ":("} */}
+    <div
+      style={{
+        width: "200px",
+        height: "50px",
+        backgroundColor: "#f44336",
+        fontSize: "18px",
+        fontWeight: "bold",
+        textAlign: "center",
+        borderRadius: "10px",
+        color: "white",
+        paddingTop: "20px",
+        alignItems: "center",
+      }}
+    >
+      {message}
+    </div>
+    {/* <button onClick={close}>X</button> */}
+  </div>
+);
 
 ReactDOM.render(
-  <React.StrictMode>
+  // <React.StrictMode>
+  //   <App />
+  // </React.StrictMode>,
+  <AlertProvider template={AlertTemplate} {...options}>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </AlertProvider>,
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
