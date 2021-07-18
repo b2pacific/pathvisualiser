@@ -40,7 +40,8 @@ const AlertTemplate = ({ style, options, message, close }) => (
         textAlign: "center",
         borderRadius: "10px",
         color: "white",
-        paddingTop: "20px",
+        paddingTop: "5%",
+        //paddingBottom: "5%",
         alignItems: "center",
       }}
     >

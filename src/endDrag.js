@@ -21,7 +21,7 @@ const useDragging = (gridRef) => {
     } else {
       setPos({
         x: x,
-        y: gridRef.current.offsetTop,
+        y: y//gridRef.current.offsetTop,
       });
     }
     e.stopPropagation();
@@ -29,7 +29,7 @@ const useDragging = (gridRef) => {
   }
 
   function onMouseUp(e) {
-    const x = Math.floor(
+    let x = Math.floor(
         (e.x - gridRef.current.offsetLeft) /
           (gridRef.current.clientWidth / 70)
       ),
@@ -44,6 +44,7 @@ const useDragging = (gridRef) => {
         y: Math.floor(y * gridRef.current.clientHeight / 30) + gridRef.current.offsetTop - 15,
       });
     } else {
+      y = 0;
       setPos({
         x: Math.floor(x * gridRef.current.clientWidth / 70) + gridRef.current.offsetLeft,
         y: gridRef.current.offsetTop - 15,
@@ -116,7 +117,7 @@ const EndDraggable = (props) => {
         left: x,
         top: y,
       }}
-    ><FaMapPin size="30px"/></div>
+    ><FaMapPin size="30px" color="red"/></div>
   );
 };
 

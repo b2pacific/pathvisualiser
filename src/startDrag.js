@@ -21,7 +21,7 @@ const useDragging = (gridRef) => {
     } else {
       setPos({
         x: x,
-        y: gridRef.current.offsetTop,
+        y: y, //gridRef.current.offsetTop,
       });
     }
     e.stopPropagation();
@@ -29,31 +29,44 @@ const useDragging = (gridRef) => {
   }
 
   function onMouseUp(e) {
-    const x = Math.floor(
+    let x = Math.floor(
         (e.x - gridRef.current.offsetLeft) / (gridRef.current.clientWidth / 70)
       ),
       y = Math.floor(
         (e.y - gridRef.current.offsetTop) / (gridRef.current.clientHeight / 30)
       );
 
-    if (ref.current.offsetTop > gridRef.current.offsetTop) {
+      // console.log(`${ref.current.offsetTop} ${gridRef.current.offsetTop + gridRef.current.offsetHeight}`);
+
+    if (ref.current.offsetTop + 15 > gridRef.current.offsetTop + gridRef.current.offsetHeight) {
       setPos({
         x:
           Math.floor((x * gridRef.current.clientWidth) / 70) +
           gridRef.current.offsetLeft,
-        y:
-          Math.floor((y * gridRef.current.clientHeight) / 30) +
-          gridRef.current.offsetTop -
-          15,
+        y: gridRef.current.offsetTop + gridRef.current.offsetHeight - 15,
       });
     } else {
-      setPos({
-        x:
-        Math.floor(x * gridRef.current.clientWidth / 70) +
-          gridRef.current.offsetLeft,
-        y: gridRef.current.offsetTop - 15,
-      });
+      if (ref.current.offsetTop > gridRef.current.offsetTop) {
+        setPos({
+          x:
+            Math.floor((x * gridRef.current.clientWidth) / 70) +
+            gridRef.current.offsetLeft,
+          y:
+            Math.floor((y * gridRef.current.clientHeight) / 30) +
+            gridRef.current.offsetTop -
+            15,
+        });
+      } else {
+        y = 0;
+        setPos({
+          x:
+            Math.floor((x * gridRef.current.clientWidth) / 70) +
+            gridRef.current.offsetLeft,
+          y: gridRef.current.offsetTop - 15,
+        });
+      }
     }
+
     EventEmitter.dispatch("start", { x, y });
     setIsDragging(false);
     e.stopPropagation();
@@ -122,7 +135,7 @@ const StartDraggable = (props) => {
         top: y,
       }}
     >
-      <FaMapMarkerAlt size="30px" />
+      <FaMapMarkerAlt size="30px" color="blue" />
     </div>
   );
 };

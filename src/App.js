@@ -181,19 +181,22 @@ const App = () => {
 
   const generateMaze = React.useCallback(
     (option) => {
-      console.log(option);
-      if (
-        option.value === "2" ||
-        option.value === "3" ||
-        option.value === "4"
-      ) {
-        let array = Array.from({ length: 2099 }, (v, k) => String(k + 1));
-        array.unshift(String(0));
-        setForbidden([...array]);
-        setBackground("lightseagreen");
-      }
+      if (option === null) {
+        alert.show("Select Maze Genetation Algo");
+      } else {
+        if (
+          option.value === "2" ||
+          option.value === "3" ||
+          option.value === "4"
+        ) {
+          let array = Array.from({ length: 2099 }, (v, k) => String(k + 1));
+          array.unshift(String(0));
+          setForbidden([...array]);
+          setBackground("lightseagreen");
+        }
 
-      maze[parseInt(option.value)]();
+        maze[parseInt(option.value)]();
+      }
     },
     [forbidden]
   );
@@ -201,18 +204,29 @@ const App = () => {
   const findPath = React.useCallback(
     (option) => {
       // try {
-      console.log("forbidden", forbidden);
-      let results = path[parseInt(option.value)](start, end, forbidden);
-
-      if (results.distance === "Infinity") {
-        alert.show("Path not Found");
+      if (option === null) {
+        alert.show("Select Path Finding Algo");
       } else {
-        let arr = results.path;
-        for (let i = 0; i < arr.length; ++i) {
-          EventEmitter.dispatch("path", String(arr[i]));
+        // console.log("forbidden", forbidden);
+
+        if (parseInt(start) >= 2100 || parseInt(end) >= 2100) {
+          alert.show("Path not Found");
+        } else {
+          let results = path[parseInt(option.value)](start, end, forbidden);
+
+          if (results.distance === "Infinity") {
+            alert.show("Path not Found");
+          } else {
+            let arr = results.path;
+            for (let i = 0; i < arr.length; ++i) {
+              EventEmitter.dispatch("path", String(arr[i]));
+            }
+          }
         }
+
+        // console.log(results);
       }
-      console.log(results);
+
       // } catch (er) {
       //   console.log(er);
       // }
@@ -258,7 +272,7 @@ const App = () => {
           paddingLeft: "20px",
           // marginTop: "10px",
           // marginLeft: "20px",
-          backgroundColor: "lightblue",
+          backgroundColor: "#7c83fd",
           color: "white",
         }}
       >
@@ -317,7 +331,7 @@ const App = () => {
             height: "30px",
             paddingLeft: "10px",
             paddingTop: "15px",
-            backgroundColor: "lightsteelblue",
+            backgroundColor: "blue",
             borderRadius: "10px",
             cursor: "pointer",
             justifySelf: "center",
@@ -337,7 +351,7 @@ const App = () => {
             height: "30px",
             paddingLeft: "10px",
             paddingTop: "15px",
-            backgroundColor: "lightsteelblue",
+            backgroundColor: "blue",
             borderRadius: "10px",
             cursor: "pointer",
             //position: "relative",
@@ -356,7 +370,7 @@ const App = () => {
             height: "30px",
             paddingLeft: "10px",
             paddingTop: "15px",
-            backgroundColor: "lightsteelblue",
+            backgroundColor: "blue",
             borderRadius: "10px",
             cursor: "pointer",
             //position: "relative",
