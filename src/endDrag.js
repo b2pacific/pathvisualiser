@@ -74,6 +74,13 @@ const useDragging = (gridRef) => {
 
   // When the element mounts, attach an mousedown listener
   useEffect(() => {
+    setPos({
+      x:
+        gridRef.current.offsetLeft +
+        Math.floor((gridRef.current.offsetWidth / 70) * 50),
+      y: gridRef.current.offsetTop + 24 * 10 - 15,
+    });
+
     ref.current.addEventListener("mousedown", onMouseDown);
 
     return () => {

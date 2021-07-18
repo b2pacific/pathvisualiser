@@ -36,9 +36,12 @@ const useDragging = (gridRef) => {
         (e.y - gridRef.current.offsetTop) / (gridRef.current.clientHeight / 30)
       );
 
-      // console.log(`${ref.current.offsetTop} ${gridRef.current.offsetTop + gridRef.current.offsetHeight}`);
+    // console.log(`${ref.current.offsetTop} ${gridRef.current.offsetTop + gridRef.current.offsetHeight}`);
 
-    if (ref.current.offsetTop + 15 > gridRef.current.offsetTop + gridRef.current.offsetHeight) {
+    if (
+      ref.current.offsetTop + 15 >
+      gridRef.current.offsetTop + gridRef.current.offsetHeight
+    ) {
       setPos({
         x:
           Math.floor((x * gridRef.current.clientWidth) / 70) +
@@ -91,6 +94,12 @@ const useDragging = (gridRef) => {
 
   // When the element mounts, attach an mousedown listener
   useEffect(() => {
+    setPos({
+      x:
+        gridRef.current.offsetLeft +
+        Math.floor((gridRef.current.offsetWidth / 70) * 20),
+      y: gridRef.current.offsetTop + 24 * 10 - 15,
+    });
     ref.current.addEventListener("mousedown", onMouseDown);
 
     return () => {

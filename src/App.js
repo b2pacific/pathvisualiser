@@ -1,6 +1,6 @@
 import React from "react";
-import ReactDOM from "react-dom";
 import Select from "react-select";
+import Modal from "react-modal";
 import djiktras from "./algorithms/djiktras";
 import bfs from "./algorithms/bfs";
 import astar from "./algorithms/astar";
@@ -16,6 +16,7 @@ import StartDraggable from "./startDrag";
 import EndDraggable from "./endDrag";
 import primsMaze from "./algorithms/primsMaze";
 import { useAlert } from "react-alert";
+import HowTo from "./howto";
 
 const Element = (props) => {
   const [backgroundColor, setColor] = React.useState(props.background);
@@ -60,6 +61,10 @@ const Element = (props) => {
     EventEmitter.subscribe("clear", (event) => {
       setColor("white");
     });
+
+    EventEmitter.subscribe("dark", () => {
+      setColor("lightseagreen");
+    });
   }, []);
 
   React.useEffect(() => {
@@ -69,9 +74,12 @@ const Element = (props) => {
     });
   }, [backgroundColor]);
 
-  React.useEffect(() => {
-    setColor(props.background);
-  }, [props.background]);
+  // React.useEffect(() => {
+  //   if (props.background !== backgroundColor) {
+  //     console.log(props.background);
+  //     setColor(props.background);
+  //   }
+  // }, [props]);
 
   React.useEffect(() => {
     //console.log(props);
@@ -96,14 +104,14 @@ const Element = (props) => {
         //console.log(event);
       }
     });
-  }, [props]);
+  }, []);
 
-  const update = () => {
-    const newForbidden = [...props.for, String(props.ele)];
-    // props.update(newForbidden);
-    props.set((forbidden) => [...forbidden, String(props.ele)]);
-    console.log(props.for);
-  };
+  // const update = () => {
+  //   const newForbidden = [...props.for, String(props.ele)];
+  //   // props.update(newForbidden);
+  //   props.set((forbidden) => [...forbidden, String(props.ele)]);
+  //   console.log(props.for);
+  // };
 
   return (
     <div
@@ -142,12 +150,13 @@ const Element = (props) => {
 const App = () => {
   const n = 2100;
   const gridRef = React.useRef(null);
-  const [start, setStart] = React.useState("0");
-  const [end, setEnd] = React.useState("0");
+  const [start, setStart] = React.useState("650");
+  const [end, setEnd] = React.useState("680");
   const [forbidden, setForbidden] = React.useState([]);
   const [pathSelect, setPathSelect] = React.useState(null);
   const [mazeSelect, setMazeSelect] = React.useState(null);
   const [background, setBackground] = React.useState("white");
+  const [modalOpen, setIsModalOpen] = React.useState(false);
 
   const path = React.useMemo(() => [djiktras, astar, dfs, bfs], []);
   const maze = React.useMemo(
@@ -179,27 +188,26 @@ const App = () => {
     }
   }, [end]);
 
-  const generateMaze = React.useCallback(
-    (option) => {
-      if (option === null) {
-        alert.show("Select Maze Genetation Algo");
-      } else {
-        if (
-          option.value === "2" ||
-          option.value === "3" ||
-          option.value === "4"
-        ) {
-          let array = Array.from({ length: 2099 }, (v, k) => String(k + 1));
-          array.unshift(String(0));
-          setForbidden([...array]);
-          setBackground("lightseagreen");
-        }
-
-        maze[parseInt(option.value)]();
+  const generateMaze = React.useCallback((option) => {
+    if (option === null) {
+      alert.show("Select Maze Genetation Algo");
+    } else {
+      if (
+        option.value === "2" ||
+        option.value === "3" ||
+        option.value === "4"
+      ) {
+        let array = Array.from({ length: 2099 }, (v, k) => String(k + 1));
+        array.unshift(String(0));
+        // console.log(`${forbidden} ${background}`);
+        setForbidden([...array]);
+        EventEmitter.dispatch("dark");
+        // setBackground("lightseagreen");
       }
-    },
-    [forbidden]
-  );
+
+      maze[parseInt(option.value)]();
+    }
+  }, []);
 
   const findPath = React.useCallback(
     (option) => {
@@ -212,7 +220,13 @@ const App = () => {
         if (parseInt(start) >= 2100 || parseInt(end) >= 2100) {
           alert.show("Path not Found");
         } else {
-          let results = path[parseInt(option.value)](start, end, forbidden);
+          let results;
+
+          if (start === end) {
+            results = { distance: 1, path: [start] };
+          } else {
+            results = path[parseInt(option.value)](start, end, forbidden);
+          }
 
           if (results.distance === "Infinity") {
             alert.show("Path not Found");
@@ -244,6 +258,10 @@ const App = () => {
     //setBackground("white");
   }, []);
 
+  const openHowTo = React.useCallback(() => {
+    setIsModalOpen(true);
+  });
+
   const pathOptions = [
     { value: "0", label: "Dijktras" },
     { value: "1", label: "Astar" },
@@ -266,7 +284,7 @@ const App = () => {
           height: "80px",
           width: "100%",
           display: "grid",
-          gridTemplateColumns: "10% 10% 10% 13% 10% 10%",
+          gridTemplateColumns: "10% 10% 10% 13% 10% 10% 10%",
           gap: "20px",
           paddingTop: "30px",
           paddingLeft: "20px",
@@ -380,7 +398,36 @@ const App = () => {
         >
           Clear Maze
         </div>
+        <div
+          onClick={() => {
+            openHowTo();
+          }}
+          style={{
+            width: "65px",
+            height: "30px",
+            paddingLeft: "10px",
+            paddingTop: "15px",
+            backgroundColor: "blue",
+            borderRadius: "10px",
+            cursor: "pointer",
+            //position: "relative",
+            // top: 0,
+            // left: 500,
+          }}
+        >
+          How To
+        </div>
       </div>
+
+      <Modal
+        isOpen={modalOpen}
+        style={{
+          content: { top: "10%", left: "30%", height: "800px", width: "800px" },
+        }}
+        onRequestClose={() => setIsModalOpen(false)}
+      >
+        <HowTo />
+      </Modal>
 
       <StartDraggable gridRef={gridRef} />
       <EndDraggable gridRef={gridRef} />
