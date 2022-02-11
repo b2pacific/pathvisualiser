@@ -281,7 +281,7 @@ const App = () => {
     { value: "3", label: "Krushals" },
     { value: "4", label: "Prims" },
   ];
-
+// react-scripts --openssl-legacy-provider start
   return (
     <div>
       <div
