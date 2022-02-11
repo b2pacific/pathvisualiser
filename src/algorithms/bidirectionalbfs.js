@@ -2,8 +2,6 @@ import { EventEmitter } from "../events";
 const Graph = require("../graph");
 
 let graph = Graph.undirected;
-let previous1 = new Map();
-let previous2 = new Map();
 
 const addIfUnset = (previous, key, value) => {
   if (!previous.has(key)) {
@@ -67,6 +65,8 @@ const bidirectionalbfs = (startNode, stopNode, forbidden) => {
 
   const visited1 = new Map();
   const visited2 = new Map();
+  const previous1 = new Map();
+  const previous2 = new Map();
   const queue1 = [];
   const queue2 = [];
   queue1.push({ node: startNode, dist: 0 });
