@@ -172,6 +172,7 @@ const App = () => {
 
   React.useEffect(() => {
     //final();
+    document.title = "PathVisualiser";
     EventEmitter.subscribe("start", (event) => {
       const pos = event.y * 70 + event.x;
       setStart(String(pos));
