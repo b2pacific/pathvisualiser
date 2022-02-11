@@ -167,7 +167,7 @@ const App = () => {
     () => [recursiveMaze, binaryTreeMaze, dfsMaze, krushalsMaze, primsMaze],
     []
   );
-// https://github.com/mars/create-react-app-buildpack.git
+  // https://github.com/mars/create-react-app-buildpack.git
   const alert = useAlert();
 
   React.useEffect(() => {
@@ -233,6 +233,8 @@ const App = () => {
               results = path[parseInt(option.value)](start, end, forbidden);
             }
 
+            console.log(results);
+
             if (results.distance === "Infinity") {
               alert.show("Path not Found");
             } else {
@@ -242,8 +244,6 @@ const App = () => {
               }
             }
           }
-
-          // console.log(results);
         }
       } catch (er) {
         console.log(er);
@@ -281,7 +281,7 @@ const App = () => {
     { value: "3", label: "Krushals" },
     { value: "4", label: "Prims" },
   ];
-// react-scripts --openssl-legacy-provider start
+  // react-scripts --openssl-legacy-provider start
   return (
     <div>
       <div
