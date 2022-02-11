@@ -13,7 +13,6 @@ const search = (node, endNode, visited, forbidden, pred) => {
       !visited.includes(String(arr[i])) &&
       !forbidden.includes(String(arr[i]))
     ) {
-      // console.log(arr[i]);
       pred[String(arr[i])] = node;
       if (String(arr[i]) === String(endNode) || flag) {
         flag = true;
@@ -25,7 +24,7 @@ const search = (node, endNode, visited, forbidden, pred) => {
 };
 
 const dfs = (startNode, endNode, forbidden) => {
-  console.log(forbidden);
+  // console.log(forbidden);
   let visited = [],
     pred = {},
     answer = [];
