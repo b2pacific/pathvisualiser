@@ -76,7 +76,7 @@ const HowTo = () => {
         </ul>
       </p>
 
-      <p style={{marginTop: "10%", fontWeight: "bold"}}>Made By Prashant</p>
+      <p style={{marginTop: "10%", fontWeight: "bold"}}>Made By <a href="https://prashantpandey.dev/" target="_blank">Prashant Pandey</a></p>
     </div>
   );
 };
