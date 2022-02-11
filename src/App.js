@@ -5,6 +5,7 @@ import djiktras from "./algorithms/djiktras";
 import bfs from "./algorithms/bfs";
 import astar from "./algorithms/astar";
 import dfs from "./algorithms/dfs";
+import bidirectionalbfs from "./algorithms/bidirectionalbfs";
 import binaryTreeMaze from "./algorithms/binaryTreeMaze";
 import dfsMaze from "./algorithms/dfsMaze";
 import recursiveMaze from "./algorithms/recursiveMaze";
@@ -158,7 +159,10 @@ const App = () => {
   const [background, setBackground] = React.useState("white");
   const [modalOpen, setIsModalOpen] = React.useState(false);
 
-  const path = React.useMemo(() => [djiktras, astar, dfs, bfs], []);
+  const path = React.useMemo(
+    () => [djiktras, astar, dfs, bfs, bidirectionalbfs],
+    []
+  );
   const maze = React.useMemo(
     () => [recursiveMaze, binaryTreeMaze, dfsMaze, krushalsMaze, primsMaze],
     []
@@ -211,39 +215,38 @@ const App = () => {
 
   const findPath = React.useCallback(
     (option) => {
-      // try {
-      if (option === null) {
-        alert.show("Select Path Finding Algo");
-      } else {
-        // console.log("forbidden", forbidden);
-
-        if (parseInt(start) >= 2100 || parseInt(end) >= 2100) {
-          alert.show("Path not Found");
+      try {
+        if (option === null) {
+          alert.show("Select Path Finding Algo");
         } else {
-          let results;
+          // console.log("forbidden", forbidden);
 
-          if (start === end) {
-            results = { distance: 1, path: [start] };
-          } else {
-            results = path[parseInt(option.value)](start, end, forbidden);
-          }
-
-          if (results.distance === "Infinity") {
+          if (parseInt(start) >= 2100 || parseInt(end) >= 2100) {
             alert.show("Path not Found");
           } else {
-            let arr = results.path;
-            for (let i = 0; i < arr.length; ++i) {
-              EventEmitter.dispatch("path", String(arr[i]));
+            let results;
+
+            if (start === end) {
+              results = { distance: 1, path: [start] };
+            } else {
+              results = path[parseInt(option.value)](start, end, forbidden);
+            }
+
+            if (results.distance === "Infinity") {
+              alert.show("Path not Found");
+            } else {
+              let arr = results.path;
+              for (let i = 0; i < arr.length; ++i) {
+                EventEmitter.dispatch("path", String(arr[i]));
+              }
             }
           }
+
+          // console.log(results);
         }
-
-        // console.log(results);
+      } catch (er) {
+        console.log(er);
       }
-
-      // } catch (er) {
-      //   console.log(er);
-      // }
     },
     [forbidden, start, end]
   );
@@ -267,6 +270,7 @@ const App = () => {
     { value: "1", label: "Astar" },
     { value: "2", label: "DFS" },
     { value: "3", label: "BFS" },
+    { value: "4", label: "Bidirectional" },
   ];
 
   const MazeOptions = [
