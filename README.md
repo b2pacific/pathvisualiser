@@ -6,21 +6,23 @@ This is the CodeBase of a Path Finding/Maze Generation Web App that I had create
 
 * React js
 * Javascript
-* Yarn
+* NPM
 
 ## Libraries Used
 
-* [React-Select]()
-* [React-Modal]()
-* [React-Alert]()
+* [React-Select](https://www.npmjs.com/package/react-select)
+* [React-Modal](https://www.npmjs.com/package/react-modal)
+* [React-Alert](https://www.npmjs.com/package/react-alert)
+* [React-Alert-Template-Basic](https://www.npmjs.com/package/react-alert-template-basic)
+* [Mersenne-Twister](https://www.npmjs.com/package/mersenne-twister)
 
 ## How to Run this on Your Local Machine
 
 ```
     > git clone git@github.com:b2pacific/pathvisualiser.git
     > cd pathvisualiser
-    > yarn install
-    > yarn start
+    > npm install
+    > npm run start
 ```
 
 ## Maze Generation Algorithms
